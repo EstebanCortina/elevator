@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div style="text-align: center;">
+    <h1>Elevator</h1>
+  </div>
+  <script>
+    //Add actualFloor to the elevatorStates properties
+    const elevator = ((total) => {
+      let elevatorState = {
+        'actualFloor': 0,
+        'Message': '',
+        'doorState': ''
+      };
+      let boolDoorSate = false;
+      let totalFloors = total;
+      function getActualFloor() {
+        return actualFloor;
+      }
+      function goUp() {
+        ++elevatorState.actualFloor;
+        elevatorState.Message = `
+          You are on the ${elevatorState.actualFloor}th floor out of ${totalFloors}
+          and the door is ${elevatorState.doorState}
+          `;
+      }
+      function goDown() {
+        --elevatorState.actualFloor;
+        elevatorState.Message = `
+          You are on the ${elevatorState.actualFloor}th floor out of ${totalFloors}
+          and the door is ${elevatorState.doorState}
+          `;
+      }
+      function gotoFloor(floor) {
+        if (floor > elevatorState.actualFloor) {
+          for (let i = elevatorState.actualFloor; i < floor; i++) {
+            goUp();
+          }
+        } else {
+          for (let i = elevatorState.actualFloor; i > floor; i--) {
+            goDown();
+          }
+        }
+      }
+
+      function door() {
+        boolDoorSate = !boolDoorSate;
+        if (boolDoorSate) {
+          elevatorState.doorState = "open";
+        } else {
+          elevatorState.doorState = "closed";
+        }
+      }
+
+      return {
+        getTotalFloors: () => { return totalFloors },
+        gotoFloor: (floor) => {
+          if (floor == elevatorState.actualFloor) {
+            elevatorState.Message = new Error(`You already are on the ${floor}th floor`);
+          } else {
+            gotoFloor(floor);
+          }
+        },
+        door: () => { door(); },
+        getElevatorState: () => {
+          return elevatorState;
+        }
+      }
+    })(10);
+
+    //Start 
+    elevator.door();
+    elevator.gotoFloor(4);
+    console.log(elevator.getElevatorState().Message);
+    elevator.door();
+    //Down
+    elevator.door();
+    elevator.gotoFloor(2);
+    console.log(elevator.getElevatorState().Message);
+    elevator.door();
+    //Same floor
+    elevator.door();
+    elevator.gotoFloor(2);
+    console.log(elevator.getElevatorState().Message);
+    elevator.door();
+
+  </script>
+</body>
+
+</html>
